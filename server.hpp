@@ -7,8 +7,6 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include <string>
-
 // Data yapısının içerisini istediğiniz gibi doldurun.
 struct Data {};
 
