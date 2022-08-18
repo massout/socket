@@ -19,17 +19,17 @@ class Server {
     int addrlen = sizeof(address);
 
    public:
-    Server(std::string &_addr, uint16_t _port);
+    Server(const char *_addr, uint16_t _port);
     void send_data(Data &_data);
     ~Server();
 };
 
-Server::Server(std::string &_addr, uint16_t _port) {
+Server::Server(const char *_addr, uint16_t _port) {
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
 
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = inet_addr(&_addr[0]);
+    address.sin_addr.s_addr = inet_addr(_addr);
     address.sin_port = htons(_port);
 
     bind(server_fd, (struct sockaddr *)&address, sizeof(address));
