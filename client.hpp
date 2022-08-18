@@ -17,12 +17,12 @@ class Client {
     struct sockaddr_in serv_addr;
 
    public:
-    Client(std::string &_addr, uint8_t _port);
+    Client(std::string &_addr, uint16_t _port);
     Data get_data(Data &_data);
     ~Client();
 };
 
-Client::Client(std::string &_addr, uint8_t _port) {
+Client::Client(std::string &_addr, uint16_t _port) {
     sock = socket(AF_INET, SOCK_STREAM, 0);
 
     serv_addr.sin_family = AF_INET;
