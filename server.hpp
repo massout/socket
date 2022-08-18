@@ -19,12 +19,12 @@ class Server {
     int addrlen = sizeof(address);
 
    public:
-    Server(std::string &_addr, uint8_t _port);
+    Server(std::string &_addr, uint16_t _port);
     void send_data(Data &_data);
     ~Server();
 };
 
-Server::Server(std::string &_addr, uint8_t _port) {
+Server::Server(std::string &_addr, uint16_t _port) {
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
 
