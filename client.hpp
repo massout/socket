@@ -7,8 +7,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <string>
-
 // Data yapısının içerisini serverla aynı olması şartıyla istediğiniz gibi doldurun.
 struct Data {};
 
@@ -17,18 +15,18 @@ class Client {
     struct sockaddr_in serv_addr;
 
    public:
-    Client(std::string &_addr, uint16_t _port);
+    Client(const char *_addr, uint16_t _port);
     Data get_data(Data &_data);
     ~Client();
 };
 
-Client::Client(std::string &_addr, uint16_t _port) {
+Client::Client(const char *_addr, uint16_t _port) {
     sock = socket(AF_INET, SOCK_STREAM, 0);
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(_port);
 
-    inet_pton(AF_INET, &_addr[0], &serv_addr.sin_addr);
+    inet_pton(AF_INET, _addr, &serv_addr.sin_addr);
 
     client_fd = connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 }
