@@ -1,5 +1,4 @@
-#ifndef SERVER_HPP
-#define SERVER_HPP
+#pragma once
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -7,9 +6,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-// Data yapısının içerisini istediğiniz gibi doldurun.
-struct Data {};
-
+template <typename T>
 class Server {
     int server_fd, new_socket;
     struct sockaddr_in address;
@@ -18,11 +15,12 @@ class Server {
 
    public:
     Server(const char *_addr, uint16_t _port);
-    void send_data(Data &_data);
+    void send_data(T &_data);
     ~Server();
 };
 
-Server::Server(const char *_addr, uint16_t _port) {
+template <typename T>
+Server<T>::Server(const char *_addr, uint16_t _port) {
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
 
@@ -35,13 +33,13 @@ Server::Server(const char *_addr, uint16_t _port) {
     new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
 }
 
-void Server::send_data(Data &_data) {
+template <typename T>
+void Server<T>::send_data(T &_data) {
     send(new_socket, &_data, sizeof(_data), 0);
 }
 
-Server::~Server() {
+template <typename T>
+Server<T>::~Server() {
     close(new_socket);
     shutdown(server_fd, SHUT_RDWR);
 }
-
-#endif
