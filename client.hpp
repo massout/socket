@@ -14,6 +14,7 @@ class Client {
    public:
     Client(const char *_addr, uint16_t _port);
     T get_data(T &_data);
+    void send_data(T &_data);
     ~Client();
 };
 
@@ -36,6 +37,11 @@ T Client<T>::get_data(T &_data) {
     read(sock, &_buffer, sizeof(_data));
 
     return _buffer;
+}
+
+template <typename T>
+void Client<T>::send_data(T &_data) {
+    write(sock, _data, sizeof(_data));
 }
 
 template <typename T>
