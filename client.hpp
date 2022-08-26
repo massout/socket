@@ -13,7 +13,7 @@ class Client {
 
    public:
     Client(const char *_addr, uint16_t _port);
-    T get_data(T &_data);
+    T get_data();
     void send_data(T &_data);
     ~Client();
 };
@@ -31,10 +31,9 @@ Client<T>::Client(const char *_addr, uint16_t _port) {
 }
 
 template <typename T>
-T Client<T>::get_data(T &_data) {
-    Data _buffer;
-
-    read(sock, &_buffer, sizeof(_data));
+T Client<T>::get_data() {
+    T _buffer;
+    read(sock, &_buffer, sizeof(T));
 
     return _buffer;
 }
