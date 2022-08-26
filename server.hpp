@@ -14,14 +14,14 @@ class Server {
     int addrlen = sizeof(address);
 
    public:
-    Server(const char *_addr, uint16_t _port);
+    Server(const char *_addr, uint16_t _port, int _max_connections);
     void send_data(T &_data);
     T get_data();
     ~Server();
 };
 
 template <typename T>
-Server<T>::Server(const char *_addr, uint16_t _port) {
+Server<T>::Server(const char *_addr, uint16_t _port, int _max_connections) {
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
 
@@ -30,7 +30,7 @@ Server<T>::Server(const char *_addr, uint16_t _port) {
     address.sin_port = htons(_port);
 
     bind(server_fd, (struct sockaddr *)&address, sizeof(address));
-    listen(server_fd, 3);
+    listen(server_fd, _max_connections);
     new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
 }
 
