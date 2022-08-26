@@ -16,6 +16,7 @@ class Server {
    public:
     Server(const char *_addr, uint16_t _port);
     void send_data(T &_data);
+    T get_data();
     ~Server();
 };
 
@@ -36,6 +37,14 @@ Server<T>::Server(const char *_addr, uint16_t _port) {
 template <typename T>
 void Server<T>::send_data(T &_data) {
     send(new_socket, &_data, sizeof(_data), 0);
+}
+
+template <typename T>
+T Server<T>::get_data() {
+    T _buffer;
+    read(new_socket, _buffer, sizeof(T));
+
+    return _buffer;
 }
 
 template <typename T>
